@@ -11,6 +11,9 @@ class Dictionary:
                     key: int | str | tuple | float | bytes | bool,
                     value: Any
                     ) -> None:
+        if self.__len__() / self.capacity > self.load_factor:
+            self.__resize__()
+
         index = hash(key) % self.capacity
 
         if self.hash_table[index] is None:
@@ -23,9 +26,6 @@ class Dictionary:
                    and self.hash_table[indexx][0] != key):
                 indexx = (indexx + 1) % self.capacity
             self.hash_table[indexx] = (key, value)
-
-        if self.__len__() / self.capacity > self.load_factor:
-            self.__resize__()
 
     def __getitem__(self, key: Any) -> Any:
         index = hash(key) % self.capacity
